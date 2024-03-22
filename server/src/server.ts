@@ -3,8 +3,11 @@ import { z } from 'zod'
 import { sql } from "./lib/postgres";
 import postgres from "postgres";
 import { redis } from "./lib/redis";
+import cors from '@fastify/cors'
 
 const app = fastify()
+
+app.register(cors)
 
 app.get("/:code", async (req: FastifyRequest, reply: FastifyReply) => {
     const paramSchema = z.object({
