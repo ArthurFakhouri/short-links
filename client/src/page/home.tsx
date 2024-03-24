@@ -35,7 +35,7 @@ export function Home() {
         ]
     })
 
-    const { mutateAsync: asyncCreateLink } = useMutation({
+    const { mutateAsync: asyncCreateLink, isPending: isCreatingLink } = useMutation({
         mutationFn: createLink,
         onSuccess: () => {
             refetchLinks()
@@ -50,8 +50,8 @@ export function Home() {
         }
     })
 
-    function handleCreateLink(data: ShortLink) {
-        asyncCreateLink({
+    async function handleCreateLink(data: ShortLink) {
+        await asyncCreateLink({
             code: data.code,
             url: data.url
         })
@@ -115,7 +115,11 @@ export function Home() {
                     />
                     {errors.url && <span className="text-red-500 text-sm">{errors.url.message}</span>}
                     <button 
-                        className="mt-2 bg-emerald-500 px-5 border-0 py-2 rounded-md w-fit self-center transition outline-0 hover:cursor-pointer hover:brightness-75"
+                        disabled={isCreatingLink}
+                        className="mt-2 bg-emerald-500 px-5 border-0 py-2 rounded-md
+                         w-fit self-center transition outline-0 hover:enabled:cursor-pointer hover:enabled:brightness-75
+                         disabled:opacity-70 disabled:cursor-not-allowed
+                         "
                         type="submit"
                     >
                             Enviar
